@@ -6,13 +6,11 @@
 ATDWCharacterBase::ATDWCharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
-
 }
 
 void ATDWCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 UAbilitySystemComponent* ATDWCharacterBase::GetAbilitySystemComponent() const
