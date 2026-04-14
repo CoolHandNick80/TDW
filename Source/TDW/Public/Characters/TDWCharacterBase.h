@@ -9,6 +9,8 @@
 
 class UAbilitySystemComponent;
 class UAttributeSet;
+class UGameplayAbility;
+class UMotionWarpingComponent;
 
 UCLASS()
 class TDW_API ATDWCharacterBase : public ACharacter, public IAbilitySystemInterface
@@ -18,16 +20,25 @@ class TDW_API ATDWCharacterBase : public ACharacter, public IAbilitySystemInterf
 public:
 	ATDWCharacterBase();
 
-protected:
-	virtual void BeginPlay() override;
-
-	virtual void InitAbilityActorInfo() {};
-
 	/*AbilitySystemInterface*/
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	/*AbilitySystemInterface*/
 
 	UAttributeSet* GetAttributeSet() { return AttributeSet; }
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetFacingTarget(const FVector& FacingTarget);
+	virtual void SetFacingTarget_Implementation(const FVector& FacingTarget);
+
+	UFUNCTION(BlueprintCallable)
+	void SetLeapSlamData(const FVector& InTargetLocation);
+
+protected:
+	virtual void BeginPlay() override;
+
+	virtual void InitAbilityActorInfo() {};
+
+	void AddCharacterAbilities();
 
 protected:
 	UPROPERTY()
@@ -36,4 +47,17 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet = nullptr;
 
+	TObjectPtr<UMotionWarpingComponent> MotionWarpingComponent = nullptr;
+
+	float ElapsedTime = 0;
+
+	float HorizontalVelocity = 0.f;
+
+	float VerticalVelocity = 0.f;
+
+	float Duration = 0.f;
+
+private:
+	UPROPERTY(EditAnywhere, Category = "Abilities")
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 };

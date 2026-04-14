@@ -6,6 +6,11 @@
 
 UTDWAttributeSet::UTDWAttributeSet()
 {
+	InitHealth(100.f);
+	InitMaxHealth(100.f);
+	InitMana(100.f);
+	InitMaxMana(100.f);
+	InitAttackSpeed(10.f);
 }
 
 void UTDWAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

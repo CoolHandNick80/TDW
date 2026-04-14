@@ -7,6 +7,8 @@
 #include "AbilitySystem/TDWAbilitySystemComponent.h"
 #include "AbilitySystem/TDWAttributeSet.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "GameplayTagContainer.h"
 
 ATDWPlayerCharacter::ATDWPlayerCharacter()
 {
@@ -39,6 +41,8 @@ void ATDWPlayerCharacter::PossessedBy(AController* NewController)
 
 	// Init ability actor info for the Server
 	InitAbilityActorInfo();
+
+	AddCharacterAbilities();
 }
 
 void ATDWPlayerCharacter::OnRep_PlayerState()
@@ -47,6 +51,28 @@ void ATDWPlayerCharacter::OnRep_PlayerState()
 
 	// Init ability actor info for the Client
 	InitAbilityActorInfo();
+}
+
+void ATDWPlayerCharacter::Tick(float DeltaTime)
+{
+	ElapsedTime += DeltaTime;
+	
+	if (ElapsedTime >= Duration)
+	{
+		SetActorTickEnabled(false);
+
+		GetCharacterMovement()->Velocity = FVector::ZeroVector;
+		FGameplayTag EventTag = FGameplayTag::RequestGameplayTag(FName("Event.Montage.JumpEnd"));
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, EventTag, FGameplayEventData());
+	}
+	else
+	{
+		FVector Vector = GetActorForwardVector() * HorizontalVelocity;
+		Vector.Z = VerticalVelocity + GetCharacterMovement()->GetGravityZ() * ElapsedTime;
+
+		GetCharacterMovement()->Velocity = Vector;
+		//AddMovementInput(Vector);
+	}
 }
 
 void ATDWPlayerCharacter::InitAbilityActorInfo()

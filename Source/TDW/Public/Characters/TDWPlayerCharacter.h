@@ -23,6 +23,9 @@ public:
 
 	virtual void OnRep_PlayerState() override;
 
+protected:
+	virtual void Tick(float DeltaTime) override;
+
 private:
 	virtual void InitAbilityActorInfo() override;
 
