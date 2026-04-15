@@ -9,6 +9,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GameplayTagContainer.h"
+#include "UI/HUD/TDWHUD.h"
 
 ATDWPlayerCharacter::ATDWPlayerCharacter()
 {
@@ -82,4 +83,12 @@ void ATDWPlayerCharacter::InitAbilityActorInfo()
 	TDWPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(TDWPlayerState, this);
 	AbilitySystemComponent = TDWPlayerState->GetAbilitySystemComponent();
 	AttributeSet = TDWPlayerState->GetAttributeSet();
+
+	if (ATDWPlayerController* TDWPlayerController = Cast<ATDWPlayerController>(GetController()))
+	{
+		if (ATDWHUD* TDWHUD = Cast<ATDWHUD>(TDWPlayerController->GetHUD()))
+		{
+			TDWHUD->InitOverlay(TDWPlayerController, TDWPlayerState, AbilitySystemComponent, AttributeSet);
+		}
+	}
 }

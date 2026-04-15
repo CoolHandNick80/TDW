@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Characters/TDWCharacterBase.h"
+#include "UI/WidgetControllers/OverlayWidgetController.h"
 #include "TDWEnemyCharacter.generated.h"
+
+class UWidgetComponent;
 
 /**
  * 
@@ -22,4 +25,16 @@ protected:
 
 	virtual void InitAbilityActorInfo() override;
 
+public:
+
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnHealthChanged;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnMaxHealthChanged;
+
+protected:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UWidgetComponent> HealthBar;
 };
