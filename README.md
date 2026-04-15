@@ -12,6 +12,6 @@ Ability takes the mouse cursor location and make the player jump at that locatio
 
 Using the distance between player location and the target location the duration of the movement can be desumed and by this vertical speed is obtained.
 
-Using parabolic movement functions Velocity can be assigned frame by frame directly, using the player tick.
+Using parabolic movement functions, CharacterMovementComponent's Velocity can be assigned frame by frame directly, using the player tick.
 
 When player land off get the enemy characters within the ability radius and apply them damage using a gameplay effect.
