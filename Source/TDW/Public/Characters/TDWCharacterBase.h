@@ -11,6 +11,7 @@ class UAbilitySystemComponent;
 class UAttributeSet;
 class UGameplayAbility;
 class UMotionWarpingComponent;
+class UNiagaraSystem;
 
 UCLASS()
 class TDW_API ATDWCharacterBase : public ACharacter, public IAbilitySystemInterface
@@ -32,6 +33,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetLeapSlamData(const FVector& InTargetLocation);
+	
+	UFUNCTION(BlueprintCallable, NetMulticast, Unreliable)
+	void Multicast_SpawnSystemAtLocation(const FVector& SpawnLocation, UNiagaraSystem* SystemTemplate);
 
 protected:
 	virtual void BeginPlay() override;

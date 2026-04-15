@@ -7,6 +7,7 @@
 #include "AbilitySystem/TDWAttributeSet.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "NiagaraFunctionLibrary.h"
 
 ATDWCharacterBase::ATDWCharacterBase()
 {
@@ -56,6 +57,12 @@ void ATDWCharacterBase::SetLeapSlamData(const FVector& InTargetLocation)
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
 
 	SetActorTickEnabled(true);
+}
+
+void ATDWCharacterBase::Multicast_SpawnSystemAtLocation_Implementation(const FVector& SpawnLocation, UNiagaraSystem* SystemTemplate)
+{
+	if(HasAuthority() || !IsLocallyControlled())
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, SystemTemplate, SpawnLocation);
 }
 
 void ATDWCharacterBase::BeginPlay()
